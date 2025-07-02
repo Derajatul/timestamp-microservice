@@ -12,17 +12,23 @@ const timestampController = {
       // If the date is a number, treat it as a Unix timestamp
       unix = parseInt(dateParam);
       utc = new Date(unix).toUTCString();
-
-      res.json({
-        unix,
-        utc,
-      });
     } else {
       // If the date is a string, try to parse it as a date
-      res.json({
-        error: "Invalid Date",
-      });
+      const date = new Date(dateParam);
+      if (date.toString() !== "Invalid Date") {
+        unix = date.getTime();
+        utc = date.toUTCString();
+      } else {
+        res.json({
+          error: "Invalid Date",
+        });
+      }
     }
+
+    res.json({
+      unix,
+      utc,
+    });
   },
 
   // Handler untuk endpoint /api/hello
